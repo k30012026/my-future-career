@@ -10,128 +10,155 @@ const CareerTestApp = () => {
   const [scores, setScores] = useState({ R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 });
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Динамическое подключение библиотеки для PDF
+  // Динамическое подключение библиотеки для PDF с проверкой
   useEffect(() => {
-    if (!window.jspdf) {
-      const script = document.createElement('script');
-      script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
+    const loadJsPDF = () => {
+      if (!window.jspdf) {
+        const script = document.createElement('script');
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+        script.async = true;
+        script.onload = () => console.log("jsPDF loaded");
+        document.body.appendChild(script);
+      }
+    };
+    loadJsPDF();
   }, []);
 
-  // ПОЛНАЯ БАЗА ДАННЫХ (Вузы и описания)
+  // РАСШИРЕННАЯ БАЗА ДАННЫХ
   const reportData = {
     R: {
       name: "Реалистичный (Технарь/Мастер)",
-      strengths: "Практическое мышление, работа с техникой, четкий результат.",
+      strengths: "Практическое мышление, работа с техникой, четкий осязаемый результат. Вы человек дела.",
       vuzi: [
-        "Севастополь: СевГУ (Политехнический институт)",
-        "Севастополь: ЧВВМУ им. Нахимова (Инженерные специальности)",
-        "Крым: КИПУ (Технологический факультет)",
-        "Симферополь: КФУ (Агротехнологическая академия)"
+        "Севастополь: СевГУ (Политехнический институт — Машиностроение, Робототехника)",
+        "Севастополь: ЧВВМУ им. Нахимова (Эксплуатация судовых машин)",
+        "Крым: КИПУ (Технологический факультет — Автосервис, Строительство)",
+        "Симферополь: КФУ (Агротехнологическая академия — Механизация сельхозпроизводства)"
       ],
-      action: "Рекомендуется: техническое творчество, моделирование, IT-инженерия."
+      professions: ["Инженер-механик", "Системный администратор", "Строитель-архитектор", "Технолог"],
+      action: "Рекомендуется: техническое творчество, робототехника, работа в мастерских."
     },
     I: {
       name: "Интеллектуальный (Исследователь)",
-      strengths: "Аналитика, решение сложных логических задач, наука.",
+      strengths: "Аналитическое мышление, решение сложных логических задач, научный подход к жизни.",
       vuzi: [
-        "Севастополь: СевГУ (Институт ИТ и кибербезопасности)",
-        "Крым: КФУ (Медицинская академия)",
-        "Симферополь: КФУ (Физико-технический институт)"
+        "Севастополь: СевГУ (Институт ИТ и кибербезопасности — ИИ, Программирование)",
+        "Крым: КФУ (Медицинская академия — Врачи всех специальностей)",
+        "Симферополь: КФУ (Физико-технический институт — Физика, Биология)",
+        "Филиал МГУ в Севастополе (Прикладная математика)"
       ],
-      action: "Рекомендуется: научные проекты, программирование, глубокое обучение."
+      professions: ["Программист-разработчик", "Ученый-исследователь", "Врач-диагност", "Data Scientist"],
+      action: "Рекомендуется: научные проекты, участие в олимпиадах по программированию, самообразование."
     },
     A: {
       name: "Артистичный (Творец)",
-      strengths: "Креативность, богатое воображение, нестандартный взгляд.",
+      strengths: "Креативность, развитая интуиция, эстетический взгляд на мир. Не любите жестких рамок.",
       vuzi: [
-        "Крым: КИПУ (Дизайн, музыка, искусство)",
-        "Крым: КФУ (Журналистика и медиакоммуникации)",
-        "Севастополь: СевГУ (Институт развития города - Дизайн)"
+        "Крым: КИПУ (Дизайн, музыкальное искусство, актерское мастерство)",
+        "Крым: КФУ (Журналистика, филология, медиакоммуникации)",
+        "Севастополь: СевГУ (Институт развития города — Дизайн городской среды)",
+        "Крымское художественное училище им. Самокиша"
       ],
-      action: "Рекомендуется: создание портфолио, медиа-проекты, курсы дизайна."
+      professions: ["Дизайнер", "Журналист/Блогер", "Архитектор", "Режиссер"],
+      action: "Рекомендуется: создание творческого портфолио, изучение графических редакторов."
     },
     S: {
       name: "Социальный (Наставник)",
-      strengths: "Эмпатия, умение объяснять, желание помогать людям.",
+      strengths: "Высокая эмпатия, умение убеждать и обучать, потребность приносить пользу обществу.",
       vuzi: [
-        "Севастополь: СевГУ (Гуманитарно-педагогический институт)",
-        "Крым: КФУ (Психология и педагогика)",
-        "Крым: КИПУ (Психолого-педагогический факультет)"
+        "Севастополь: СевГУ (Гуманитарно-педагогический институт — Педагогика, Психология)",
+        "Крым: КФУ (Факультет психологии)",
+        "Крым: КИПУ (Специальное дефектологическое образование)",
+        "Медицинские колледжи Крыма (Сестринское дело)"
       ],
-      action: "Рекомендуется: волонтерство, педагогика, работа с группами."
+      professions: ["Учитель/Преподаватель", "Психолог", "Врач-терапевт", "HR-менеджер"],
+      action: "Рекомендуется: волонтерская деятельность, социальные проекты, работа с детьми."
     },
     E: {
       name: "Предприимчивый (Лидер)",
-      strengths: "Энергичность, лидерство, умение убеждать и вести бизнес.",
+      strengths: "Энергия, организаторские способности, готовность к риску и лидерству.",
       vuzi: [
-        "Крым: КФУ (Институт экономики и управления)",
-        "Севастополь: СевГУ (Институт финансов и управления)",
-        "Филиал МГУ в Севастополе (Управление)"
+        "Крым: КФУ (Институт экономики и управления — Маркетинг, Менеджмент)",
+        "Севастополь: СевГУ (Институт финансов и управления — Международный бизнес)",
+        "Филиал МГУ в Севастополе (Государственное управление)",
+        "Севастопольский филиал РЭУ им. Плеханова"
       ],
-      action: "Рекомендуется: лидерские школы, бизнес-игры, дебаты."
+      professions: ["Предприниматель", "Руководитель проектов", "Юрист", "Маркетолог"],
+      action: "Рекомендуется: лидерские школы, запуск своих мини-проектов, изучение финансов."
     },
     C: {
       name: "Конвенциональный (Организатор)",
-      strengths: "Системность, внимание к деталям, работа с данными.",
+      strengths: "Аккуратность, системность, умение работать со структурами и большими данными.",
       vuzi: [
-        "Севастополь: СевГУ (Государственное и муниципальное управление)",
-        "Крым: КФУ (Экономика и учет)",
-        "Симферополь: Академия строительства и архитектуры"
+        "Севастополь: СевГУ (Бухгалтерский учет, Анализ и аудит)",
+        "Крым: КФУ (Экономика, Государственное и муниципальное управление)",
+        "Симферополь: Академия строительства — Сметное дело",
+        "Банковские и финансовые колледжи"
       ],
-      action: "Рекомендуется: изучение систем управления, аналитика данных, логистика."
+      professions: ["Бухгалтер", "Финансовый аналитик", "Специалист по кибербезопасности", "Нотариус"],
+      action: "Рекомендуется: углубленное изучение Excel, аналитика данных, курсы по праву."
     }
   };
 
-  // ТЕСТОВЫЕ ВОПРОСЫ
+  // ОБНОВЛЕННЫЙ СПИСОК ВОПРОСОВ (Добавлено больше вариантов)
   const questions = [
     {
       id: 1,
-      text: "Какое занятие тебе больше по душе в выходной день?",
+      text: "Чем тебе больше всего нравится заниматься в свободное время?",
       options: [
-        { text: "Собирать мебель или чинить велосипед", type: 'R' },
-        { text: "Разгадывать сложные головоломки или кодить", type: 'I' },
-        { text: "Рисовать, писать музыку или стихи", type: 'A' },
-        { text: "Организовать праздник для друзей", type: 'S' },
-        { text: "Придумывать, как заработать на своем хобби", type: 'E' },
-        { text: "Наводить порядок в папках и документах", type: 'C' }
+        { text: "Разбирать технику или создавать что-то своими руками", type: 'R' },
+        { text: "Искать ответы на сложные вопросы в интернете или книгах", type: 'I' },
+        { text: "Заниматься творчеством: рисовать, писать, петь", type: 'A' },
+        { text: "Общаться с людьми, помогать советом или делом", type: 'S' },
+        { text: "Организовывать мероприятия или придумывать идеи для бизнеса", type: 'E' },
+        { text: "Систематизировать информацию, наводить порядок в делах", type: 'C' }
       ]
     },
     {
       id: 2,
-      text: "Какой школьный проект был бы тебе интересен?",
+      text: "Какой школьный проект вызвал бы у тебя наибольший интерес?",
       options: [
-        { text: "Создание действующей модели робота", type: 'R' },
-        { text: "Исследование влияния радиации на растения", type: 'I' },
-        { text: "Постановка школьного спектакля", type: 'A' },
-        { text: "Проведение тренинга по общению для младших классов", type: 'S' },
-        { text: "Разработка бизнес-плана школьной кофейни", type: 'E' },
-        { text: "Создание удобной системы учета книг в библиотеке", type: 'C' }
+        { text: "Сборка макета двигателя или робота", type: 'R' },
+        { text: "Анализ исторических фактов или научное исследование", type: 'I' },
+        { text: "Создание видеоролика или дизайн школьной газеты", type: 'A' },
+        { text: "Проведение благотворительной акции", type: 'S' },
+        { text: "Подготовка презентации по продвижению товара", type: 'E' },
+        { text: "Составление архива или базы данных школы", type: 'C' }
       ]
     },
     {
       id: 3,
-      text: "Если бы ты работал в крупной компании, кем бы ты был?",
+      text: "Если бы ты выбирал работу в компании мечты, кем бы ты стал?",
       options: [
-        { text: "Главным инженером производства", type: 'R' },
-        { text: "Ведущим аналитиком или ученым", type: 'I' },
-        { text: "Креативным директором", type: 'A' },
-        { text: "Руководителем отдела обучения персонала", type: 'S' },
-        { text: "Генеральным директором, принимающим решения", type: 'E' },
-        { text: "Финансовым аудитором или юристом", type: 'C' }
+        { text: "Техническим экспертом, работающим с оборудованием", type: 'R' },
+        { text: "Аналитиком в лаборатории или отделе данных", type: 'I' },
+        { text: "Креативным дизайнером или автором контента", type: 'A' },
+        { text: "Координатором по работе с клиентами и обучению", type: 'S' },
+        { text: "Директором по развитию или отделом продаж", type: 'E' },
+        { text: "Главным бухгалтером или аудитором", type: 'C' }
+      ]
+    },
+    {
+      id: 4,
+      text: "В какой среде тебе комфортнее всего работать?",
+      options: [
+        { text: "В мастерской или на производстве", type: 'R' },
+        { text: "В тихом кабинете или библиотеке", type: 'I' },
+        { text: "В творческой студии с гибким графиком", type: 'A' },
+        { text: "В коллективе, где много общения и взаимодействия", type: 'S' },
+        { text: "В динамичном офисе, где постоянно нужно принимать решения", type: 'E' },
+        { text: "В четко структурированном офисе с правилами", type: 'C' }
       ]
     }
   ];
 
   const typesInfo = {
-    R: { icon: <Wrench className="text-blue-500" /> },
-    I: { icon: <Search className="text-purple-500" /> },
-    A: { icon: <Feather className="text-pink-500" /> },
-    S: { icon: <Heart className="text-red-500" /> },
-    E: { icon: <Briefcase className="text-orange-500" /> },
-    C: { icon: <Calculator className="text-green-500" /> },
+    R: { icon: <Wrench className="text-blue-500 w-12 h-12" /> },
+    I: { icon: <Search className="text-purple-500 w-12 h-12" /> },
+    A: { icon: <Feather className="text-pink-500 w-12 h-12" /> },
+    S: { icon: <Heart className="text-red-500 w-12 h-12" /> },
+    E: { icon: <Briefcase className="text-orange-500 w-12 h-12" /> },
+    C: { icon: <Calculator className="text-green-500 w-12 h-12" /> },
   };
 
   const handleAnswer = (type) => {
@@ -145,7 +172,7 @@ const CareerTestApp = () => {
 
   const generatePDF = async () => {
     if (!window.jspdf) {
-      alert("Подождите, модуль PDF загружается...");
+      alert("Пожалуйста, подождите, модуль PDF загружается (проверьте интернет-соединение).");
       return;
     }
 
@@ -158,55 +185,67 @@ const CareerTestApp = () => {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       
-      // ВНИМАНИЕ: Стандартный PDF не поддерживает русский без шрифтов.
-      // Поэтому в отчете мы используем латиницу для структуры и транслит/английский
-      // Либо выводим основные данные визуально.
-      
+      // Генерация PDF (с учетом ограничений кириллицы в стандартных шрифтах jspdf)
       doc.setFont("helvetica", "bold");
       doc.setFontSize(22);
-      doc.text("FuturePath: Career Report", 20, 20);
+      doc.text("FuturePath: Career Guidance Report", 20, 20);
       
-      doc.setFontSize(14);
-      doc.text(`Resulting Type: ${topTypeCode} (${data.name.split('(')[0]})`, 20, 40);
+      doc.setFontSize(16);
+      doc.text(`Psychotype Result: ${topTypeCode}`, 20, 40);
       
       doc.setFontSize(12);
-      doc.text("Your Strengths:", 20, 60);
       doc.setFont("helvetica", "normal");
-      const strengths = doc.splitTextToSize(data.strengths, 160);
-      doc.text(strengths, 20, 70);
+      doc.text("Strengths and Recommendations:", 20, 60);
+      
+      const strengthsText = `Result: ${data.name}. ${data.strengths}`;
+      const splitText = doc.splitTextToSize(strengthsText, 170);
+      doc.text(splitText, 20, 70);
 
       doc.setFont("helvetica", "bold");
-      doc.text("Recommended Universities (Region):", 20, 100);
+      doc.text("Top Universities & Professions:", 20, 110);
       doc.setFont("helvetica", "normal");
-      data.vuzi.forEach((vuz, i) => {
-        doc.text(`- ${vuz}`, 20, 110 + (i * 10));
+      
+      let yPos = 120;
+      data.vuzi.slice(0, 4).forEach((vuz) => {
+        const vuzLine = doc.splitTextToSize(`- ${vuz}`, 170);
+        doc.text(vuzLine, 20, yPos);
+        yPos += (vuzLine.length * 7);
       });
+
+      doc.text("Suggested Professions:", 20, yPos + 10);
+      doc.text(data.professions.join(", "), 20, yPos + 20);
 
       doc.save(`Career_Report_${topTypeCode}.pdf`);
     } catch (error) {
       console.error(error);
-      alert("Ошибка при создании файла. Попробуйте еще раз.");
+      alert("Произошла ошибка при создании PDF.");
     } finally {
       setIsGenerating(false);
     }
   };
 
+  const resetTest = () => {
+    setScores({ R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 });
+    setCurrentQuestion(0);
+    setCurrentStep('start');
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-lg bg-white rounded-[2rem] shadow-2xl p-8 border border-slate-100">
+      <div className="w-full max-w-lg bg-white rounded-[2.5rem] shadow-2xl p-8 border border-slate-100 overflow-hidden">
         
         {currentStep === 'start' && (
           <div className="text-center space-y-8 py-6">
-            <div className="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto rotate-3 shadow-lg">
-              <Map className="w-10 h-10 text-white" />
+            <div className="w-24 h-24 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto rotate-3 shadow-xl">
+              <Map className="w-12 h-12 text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight">FuturePath</h1>
-              <p className="text-slate-500 mt-2 text-lg">Твой навигатор в мире профессий Крыма</p>
+              <h1 className="text-5xl font-black text-slate-800 tracking-tight">FuturePath</h1>
+              <p className="text-slate-500 mt-3 text-xl">Твой навигатор в мире профессий Крыма и Севастополя</p>
             </div>
             <button 
               onClick={() => setCurrentStep('test')} 
-              className="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold text-xl hover:bg-blue-700 transition-all hover:shadow-xl active:scale-95"
+              className="w-full py-6 bg-blue-600 text-white rounded-2xl font-bold text-2xl hover:bg-blue-700 transition-all hover:shadow-2xl active:scale-95 transform"
             >
               Начать исследование
             </button>
@@ -214,30 +253,30 @@ const CareerTestApp = () => {
         )}
 
         {currentStep === 'test' && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex justify-between items-center mb-8">
-              <span className="px-4 py-1 bg-slate-100 rounded-full text-slate-500 text-sm font-bold">
-                Вопрос {currentQuestion + 1} / {questions.length}
+          <div className="animate-in fade-in slide-in-from-bottom-6 duration-500">
+            <div className="flex justify-between items-center mb-10">
+              <span className="px-5 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-black uppercase tracking-widest">
+                {currentQuestion + 1} / {questions.length}
               </span>
-              <div className="flex-1 ml-4 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="flex-1 ml-6 h-3 bg-slate-100 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-blue-600 transition-all duration-500" 
+                  className="h-full bg-blue-600 transition-all duration-700 ease-out" 
                   style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
                 ></div>
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-8 leading-tight">
+            <h2 className="text-3xl font-bold text-slate-800 mb-10 leading-snug">
               {questions[currentQuestion].text}
             </h2>
-            <div className="space-y-4">
+            <div className="grid gap-4">
               {questions[currentQuestion].options.map((opt, i) => (
                 <button 
                   key={i} 
                   onClick={() => handleAnswer(opt.type)} 
-                  className="w-full p-5 border-2 border-slate-100 rounded-2xl hover:border-blue-500 hover:bg-blue-50 text-left transition-all font-medium text-slate-700 flex items-center gap-4"
+                  className="w-full p-6 border-2 border-slate-100 rounded-2xl hover:border-blue-400 hover:bg-blue-50 text-left transition-all font-semibold text-slate-700 flex items-center gap-5 group"
                 >
-                  <span className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 font-bold">{i + 1}</span>
-                  {opt.text}
+                  <span className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 font-black group-hover:bg-blue-600 group-hover:text-white transition-colors">{i + 1}</span>
+                  <span className="flex-1">{opt.text}</span>
                 </button>
               ))}
             </div>
@@ -246,43 +285,43 @@ const CareerTestApp = () => {
 
         {currentStep === 'result' && (
           <div className="text-center space-y-8 animate-in zoom-in duration-500">
-            <h2 className="text-3xl font-black text-slate-800">Результат готов!</h2>
+            <h2 className="text-4xl font-black text-slate-800">Результат готов!</h2>
             
-            <div className="p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[2.5rem] border border-blue-100 relative overflow-hidden">
+            <div className="p-10 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[3rem] border-2 border-white shadow-inner relative overflow-hidden">
               <div className="relative z-10 flex flex-col items-center">
-                <div className="mb-4 p-4 bg-white rounded-2xl shadow-sm">
+                <div className="mb-6 p-6 bg-white rounded-3xl shadow-lg ring-4 ring-blue-100">
                   {typesInfo[Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0]].icon}
                 </div>
-                <h3 className="text-2xl font-black text-blue-800">
+                <h3 className="text-3xl font-black text-blue-900 leading-tight">
                   {reportData[Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0]].name}
                 </h3>
-                <p className="mt-4 text-slate-600 text-sm leading-relaxed">
+                <p className="mt-6 text-slate-600 text-lg leading-relaxed">
                   {reportData[Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0]].strengths}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               <button 
                 onClick={generatePDF} 
                 disabled={isGenerating}
-                className="w-full py-5 bg-emerald-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100 active:scale-95"
+                className="w-full py-6 bg-emerald-600 text-white rounded-2xl font-bold text-xl flex items-center justify-center gap-4 hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 active:scale-95"
               >
-                <Download size={24} /> 
-                {isGenerating ? "Создаем отчет..." : "Скачать PDF-отчет"}
+                <Download size={28} /> 
+                {isGenerating ? "Создание..." : "Скачать PDF-отчет"}
               </button>
               
               <button 
-                onClick={() => {setScores({R:0,I:0,A:0,S:0,E:0,C:0}); setCurrentQuestion(0); setCurrentStep('start');}}
+                onClick={resetTest}
                 className="w-full py-4 text-slate-400 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"
               >
-                <RefreshCw size={18} /> Пройти еще раз
+                <RefreshCw size={20} /> Пройти заново
               </button>
             </div>
 
-            <div className="pt-4 border-t border-slate-100">
-              <p className="text-xs text-slate-400 font-medium uppercase tracking-widest">
-                Рекомендовано для Севастополя и Крыма
+            <div className="pt-6 border-t-2 border-slate-50">
+              <p className="text-sm text-slate-400 font-bold uppercase tracking-[0.2em]">
+                Для молодежи Крыма и Севастополя
               </p>
             </div>
           </div>
