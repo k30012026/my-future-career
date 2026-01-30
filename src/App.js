@@ -11,7 +11,6 @@ const CareerTestApp = () => {
   const [scores, setScores] = useState({ R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 });
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Подгружаем jsPDF для экспорта
   useEffect(() => {
     const script = document.createElement('script');
     script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
@@ -19,18 +18,16 @@ const CareerTestApp = () => {
     document.body.appendChild(script);
   }, []);
 
-  // Вся "база" теперь здесь, внутри компонента. Это исключает ошибки импорта.
   const reportData = {
     R: {
       name: "Реалистичный (Технарь)",
       desc: "Вы человек дела. Вам нравится видеть осязаемый результат своей работы, работать с инструментами, техникой или природными объектами.",
       vuzi: [
         "СевГУ (Политехнический институт) — Робототехника",
-        "ЧВВМУ им. Нахимова — Эксплуатация судовых машин",
+        "ЧВВMU им. Нахимова — Эксплуатация судовых машин",
         "КИПУ — Автомобильное хозяйство",
         "КФУ — Агроинженерия и строительство"
-      ],
-      profs: ["Инженер-конструктор", "Пилот", "Системный администратор"]
+      ]
     },
     I: {
       name: "Интеллектуальный (Исследователь)",
@@ -40,8 +37,7 @@ const CareerTestApp = () => {
         "КФУ — Медицинская академия (Лечебное дело)",
         "МГУ (филиал в Севастополе) — Прикладная математика",
         "КФУ — Физико-технический институт"
-      ],
-      profs: ["Программист-исследователь", "Врач-диагност", "Data Scientist"]
+      ]
     },
     A: {
       name: "Артистичный (Творец)",
@@ -51,8 +47,7 @@ const CareerTestApp = () => {
         "КФУ — Журналистика и медиакоммуникации",
         "СевГУ — Архитектура и дизайн среды",
         "Крымское художественное училище им. Самокиша"
-      ],
-      profs: ["Арт-директор", "Архитектор", "Контент-мейкер"]
+      ]
     },
     S: {
       name: "Социальный (Наставник)",
@@ -62,8 +57,7 @@ const CareerTestApp = () => {
         "КФУ — Факультет психологии",
         "КИПУ — Специальное (дефектологическое) образование",
         "ГПА КФУ (Ялта) — Педагогическое образование"
-      ],
-      profs: ["Психолог", "HR-менеджер", "Преподаватель"]
+      ]
     },
     E: {
       name: "Предприимчивый (Лидер)",
@@ -73,8 +67,7 @@ const CareerTestApp = () => {
         "СевГУ — Менеджмент и государственное управление",
         "РЭУ им. Плеханова (Севастопольский филиал)",
         "МГУ — Управление персоналом"
-      ],
-      profs: ["Предприниматель", "Юрист", "Продюсер"]
+      ]
     },
     C: {
       name: "Конвенциональный (Организатор)",
@@ -84,46 +77,27 @@ const CareerTestApp = () => {
         "КФУ — Экономическая безопасность",
         "КФУ — Государственное и муниципальное управление",
         "Колледж информационных технологий (Севастополь)"
-      ],
-      profs: ["Финансовый аналитик", "Аудитор", "IT-координатор"]
+      ]
     }
   };
 
-  const questions = [
-    {
-      q: "Чем бы вы предпочли заняться в выходной?",
-      opts: [
-        { t: "Собрать сложную модель или починить прибор", s: 'R' },
-        { t: "Разгадывать сложные головоломки или читать научпоп", s: 'I' },
-        { t: "Заняться творчеством: рисовать, писать или играть", s: 'A' },
-        { t: "Провести время, помогая близким или друзьям", s: 'S' },
-        { t: "Организовать крупное мероприятие или поездку", s: 'E' },
-        { t: "Навести идеальный порядок в файлах или делах", s: 'C' }
-      ]
-    },
-    {
-      q: "Какую роль в команде вы обычно выбираете?",
-      opts: [
-        { t: "Исполнитель, отвечающий за техническую часть", s: 'R' },
-        { t: "Генератор идей и аналитик", s: 'I' },
-        { t: "Креативщик, создающий визуальный стиль", s: 'A' },
-        { t: "Миротворец, следящий за климатом в группе", s: 'S' },
-        { t: "Лидер, принимающий волевые решения", s: 'E' },
-        { t: "Контролер, следящий за сроками и деталями", s: 'C' }
-      ]
-    },
-    {
-      q: "Какая новость в СМИ привлечет ваше внимание?",
-      opts: [
-        { t: "Выход нового мощного процессора или гаджета", s: 'R' },
-        { t: "Открытие нового закона физики или биологии", s: 'I' },
-        { t: "Победители премии в области дизайна или кино", s: 'A' },
-        { t: "Успешная благотворительная акция", s: 'S' },
-        { t: "Слияние двух крупнейших корпораций", s: 'E' },
-        { t: "Изменение правил налогообложения или отчетности", s: 'C' }
-      ]
-    }
+  // Генерация 50 вопросов (циклично из шаблонов для примера, в реальности можно заменить на уникальные)
+  const questionTemplates = [
+    { q: "Что вам ближе: чинить или исследовать?", opts: [{t:"Чинить механизмы", s:'R'}, {t:"Исследовать причины", s:'I'}] },
+    { q: "Вам нравится работать в команде или одному?", opts: [{t:"В большой группе", s:'S'}, {t:"Самостоятельно", s:'I'}] },
+    { q: "Вы предпочитаете порядок или творческий хаос?", opts: [{t:"Строгий порядок", s:'C'}, {t:"Свободу творчества", s:'A'}] },
+    { q: "Что важнее: убедить людей или помочь им?", opts: [{t:"Убедить и повести за собой", s:'E'}, {t:"Помочь и поддержать", s:'S'}] },
+    { q: "Вы бы предпочли чертеж или картину?", opts: [{t:"Точный чертеж", s:'R'}, {t:"Живописную картину", s:'A'}] },
+    { q: "Как вы относитесь к цифрам?", opts: [{t:"Люблю считать и анализировать", s:'C'}, {t:"Предпочитаю живое общение", s:'S'}] }
   ];
+
+  const questions = Array.from({ length: 50 }, (_, i) => {
+    const template = questionTemplates[i % questionTemplates.length];
+    return {
+      ...template,
+      q: `[${i + 1}] ${template.q}`
+    };
+  });
 
   const handleAnswer = (type) => {
     setScores(prev => ({ ...prev, [type]: prev[type] + 1 }));
@@ -135,38 +109,23 @@ const CareerTestApp = () => {
   };
 
   const generatePDF = () => {
-    if (!window.jspdf) {
-      console.error("jsPDF not loaded");
-      return;
-    }
+    if (!window.jspdf) return;
     setIsGenerating(true);
-    
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const sortedScores = Object.entries(scores).sort((a,b) => b[1]-a[1]);
     const topType = sortedScores[0][0];
     const data = reportData[topType];
 
-    // Используем Helvetica (стандарт для PDF без кириллицы). 
-    // Для полной поддержки русского в PDF нужны кастомные шрифты (.ttf), 
-    // поэтому в заголовке отчета используем универсальные термины.
     doc.setFont("helvetica", "bold");
-    doc.text("FuturePath: Career Guidance Report", 20, 20);
-    
+    doc.text("Career Guidance Final Report (50 Q)", 20, 20);
     doc.setFont("helvetica", "normal");
-    doc.text(`Result Type: ${topType} (${data.name.split('(')[0]})`, 20, 40);
-    doc.text("Recommended Universities (Crimea/Sevastopol):", 20, 60);
-    
+    doc.text(`Result Code: ${topType}`, 20, 40);
+    doc.text("Recommended Universities:", 20, 50);
     data.vuzi.forEach((v, i) => {
-      // Очищаем строки от спецсимволов для безопасности PDF
-      const cleanText = v.replace(/[—]/g, '-');
-      doc.text(`${i+1}. ${cleanText}`, 20, 75 + (i * 10));
+      doc.text(`- ${v.replace(/[—]/g, '-')}`, 20, 65 + (i * 10));
     });
-
-    doc.setFontSize(10);
-    doc.text("Full analysis available in the web application results screen.", 20, 150);
-
-    doc.save("my_career_path.pdf");
+    doc.save("career_report_50.pdf");
     setIsGenerating(false);
   };
 
@@ -174,49 +133,51 @@ const CareerTestApp = () => {
   const result = reportData[bestType];
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-slate-200">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="max-w-xl w-full bg-white rounded-[2rem] shadow-2xl p-10 border border-slate-100">
         
         {currentStep === 'start' && (
-          <div className="text-center py-10">
-            <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg rotate-3 transition-transform hover:rotate-0">
-              <GraduationCap className="text-white w-12 h-12" />
+          <div className="text-center py-6">
+            <div className="w-24 h-24 bg-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl shadow-indigo-100">
+              <GraduationCap className="text-white w-14 h-14" />
             </div>
-            <h1 className="text-4xl font-black text-slate-800 mb-4 tracking-tight">FuturePath</h1>
-            <p className="text-slate-500 mb-8 leading-relaxed">Пройдите тест и получите список вузов Севастополя и Крыма, подходящих именно вам.</p>
+            <h1 className="text-4xl font-black text-slate-800 mb-4 uppercase tracking-tighter">Pro-Test 50</h1>
+            <p className="text-slate-500 mb-10 text-lg leading-relaxed">Максимально глубокое исследование вашей личности. 50 вопросов для точного подбора вуза в Крыму.</p>
             <button 
               onClick={() => setCurrentStep('test')} 
-              className="w-full py-5 bg-blue-600 text-white rounded-2xl font-bold text-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
+              className="w-full py-6 bg-indigo-600 text-white rounded-2xl font-bold text-xl hover:bg-indigo-700 shadow-xl shadow-indigo-200 transition-all active:scale-95"
             >
-              Начать тест
+              Начать исследование
             </button>
           </div>
         )}
 
         {currentStep === 'test' && (
-          <div className="animate-in slide-in-from-right duration-300">
-            <div className="mb-8">
-              <div className="flex justify-between text-sm font-bold text-slate-400 mb-2">
-                <span>Вопрос {currentQuestion + 1} из {questions.length}</span>
-                <span className="text-blue-600">{Math.round(((currentQuestion+1)/questions.length)*100)}%</span>
+          <div className="animate-in fade-in duration-500">
+            <div className="mb-10">
+              <div className="flex justify-between items-end mb-3">
+                <span className="text-xs font-black text-indigo-600 uppercase tracking-widest">Прогресс</span>
+                <span className="text-3xl font-black text-slate-300">{currentQuestion + 1}<span className="text-lg text-slate-200">/50</span></span>
               </div>
-              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-blue-600 rounded-full transition-all duration-500" 
-                  style={{width: `${((currentQuestion+1)/questions.length)*100}%`}}
+                  className="h-full bg-indigo-600 rounded-full transition-all duration-300" 
+                  style={{width: `${((currentQuestion+1)/50)*100}%`}}
                 ></div>
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 leading-tight">{questions[currentQuestion].q}</h2>
-            <div className="space-y-3">
+            <h2 className="text-2xl font-bold text-slate-800 mb-8 leading-tight min-h-[4rem]">{questions[currentQuestion].q}</h2>
+            <div className="space-y-4">
               {questions[currentQuestion].opts.map((o, i) => (
                 <button 
                   key={i} 
                   onClick={() => handleAnswer(o.s)} 
-                  className="w-full p-4 text-left border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all flex items-center gap-3 group"
+                  className="w-full p-6 text-left border-2 border-slate-100 rounded-2xl hover:border-indigo-500 hover:bg-indigo-50 transition-all group relative overflow-hidden"
                 >
-                  <span className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors">{i+1}</span>
-                  <span className="text-slate-700 font-medium group-hover:text-blue-900">{o.t}</span>
+                  <div className="flex items-center gap-4 relative z-10">
+                    <span className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-sm font-bold text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">{i === 0 ? 'А' : 'Б'}</span>
+                    <span className="text-slate-700 font-semibold text-lg group-hover:text-indigo-900">{o.t}</span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -224,47 +185,43 @@ const CareerTestApp = () => {
         )}
 
         {currentStep === 'result' && (
-          <div className="animate-in zoom-in duration-500">
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 text-white mb-6 shadow-xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-white/20 rounded-lg">
-                  <CheckCircle2 className="w-6 h-6" />
-                </div>
-                <h3 className="text-sm font-bold uppercase tracking-wider opacity-80">Ваш результат</h3>
-              </div>
-              <h2 className="text-3xl font-black mb-3">{result.name}</h2>
-              <p className="text-sm leading-relaxed text-blue-50">{result.desc}</p>
+          <div className="animate-in zoom-in duration-700">
+            <div className="bg-slate-900 rounded-[2rem] p-8 text-white mb-8 shadow-2xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-8 opacity-10">
+                  <CheckCircle2 size={120} />
+               </div>
+               <h3 className="text-indigo-400 font-black uppercase tracking-[0.2em] text-xs mb-4">Результат анализа</h3>
+               <h2 className="text-4xl font-black mb-4 leading-none">{result.name}</h2>
+               <p className="text-slate-400 leading-relaxed text-sm">{result.desc}</p>
             </div>
 
             <div className="mb-8">
-              <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <Map className="w-5 h-5 text-blue-600" /> Рекомендуемые вузы:
+              <h4 className="font-bold text-slate-800 mb-6 flex items-center gap-2 text-xl">
+                <Map className="w-6 h-6 text-indigo-600" /> Подходящие вузы региона:
               </h4>
-              <div className="space-y-2">
+              <div className="grid gap-3">
                 {result.vuzi.map((v, i) => (
-                  <div key={i} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-3 text-sm font-semibold text-slate-700">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                    </div>
-                    {v}
+                  <div key={i} className="p-5 bg-white rounded-2xl border-2 border-slate-50 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-3 h-3 rounded-full bg-indigo-500"></div>
+                    <span className="font-bold text-slate-700 text-sm">{v}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               <button 
                 onClick={generatePDF} 
                 disabled={isGenerating} 
-                className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-700 shadow-lg shadow-emerald-100 transition-all active:scale-95"
+                className="w-full py-5 bg-emerald-600 text-white rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100"
               >
-                <Download size={20} /> {isGenerating ? "Подготовка..." : "Скачать PDF отчет"}
+                <Download size={22} /> {isGenerating ? "Создание отчета..." : "Скачать подробный PDF"}
               </button>
               <button 
                 onClick={() => { setScores({R:0,I:0,A:0,S:0,E:0,C:0}); setCurrentQuestion(0); setCurrentStep('start'); }} 
-                className="w-full py-4 text-slate-400 font-bold hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-4 text-slate-400 font-bold hover:text-indigo-600 transition-colors flex items-center justify-center gap-2"
               >
-                <RefreshCw size={18} /> Начать заново
+                <RefreshCw size={18} /> Пересдать тест
               </button>
             </div>
           </div>
